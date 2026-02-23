@@ -31,5 +31,5 @@ io.on('connection', (socket) => {
 
 
 server.listen(3000, () => {
-  console.log('server running at https://windy-system.com');
+  console.log('server running at http://208.126.74.157');
 });
