@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="author" content="WindySprings">
+	<meta name="description" content="Site of Winds of Spring System">
+
+	<title>Windy Springs Page: Chatroom</title>
+	<link rel="icon" href="siteicon.png" type="image/x-icon">
+	<link rel="stylesheet" href="main.css">
+  <script src="https://cnd.socket.io/socket.io-3.1.2.js"></script>
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+	<h1 style="text-align: center;">--Winds of Spring: Chatroom!--</h1>
+	<br>
+	<hr>
+	<br>
+	<section class="container">
+          <div class="box"><abbr title="Home"><a href="index.html">Home</a></abbr></div>
+          <div class="box"><abbr title="Game Dev"><a href="projects.html">Game Dev</a></abbr></div>
+          <div class="box"><abbr title="Art (Pixel Art)"><a href="pixelart.html">Pixel Art</a></abbr></div>
+          <div class="box"><abbr title="Art (3D Art)"><a href="3dart.html">3D Art</a></abbr></div>
+          <div class="box"><abbr title="Art (Drawn Art)"><a href="drawnart.html">Drawn Art</a></abbr></div>
+          <div class="box"><abbr title="Chatroom"><a href="chatroom.html">Chatroom</a></abbr></div>
+    </section>
+    <br>
+    <hr>
+    <br>
+		<h2 style="text-align: center;">-Live Chatroom Rules!-</h2>
+		<ul style="text-align: center;">
+          <li>1. No Hatespeech/toxic behaviour.</li>
+          <li>2. Please don't spam.</li>
+          <li>3. Respect bounderies of others.</li>
+          <li>4. The chat will (usually) be cleared every 24 hours CST.</li>
+        </ul>
+    <br>
+	<hr>
+	<br>
+		<h2 style="text-align: center;">-The Chatroom-</h2>
+		<div style="text-align: center;" id="message-container">
+      <ul id="bwaa">
+
+      </ul>
+    </div>
+
+		<form style="text-align: center;" id="send-container">
+          <input placeholder="Message">
+          <button type="submit" id="send-button">Send</button>
+    <br>
+</body>
+</html>
