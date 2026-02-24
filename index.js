@@ -7,29 +7,32 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
+const users = {}
+
 app.get('/', (req, res) => {
-  res.sendFile(join(__dirname, './chatroom.html'));
+  res.sendFile(join(__dirname, 'chatroom.html'));
 });
 
 
 io.on('connection', (socket) => {
-    console.log('a user connected');
-
-    socket.on('chat message', (msg) => {
-    io.emit('chat message', msg);
+    socket.on('new-user', name => {
+        users[socket.id] = name;
+        socket.broadcast.emit('user-connected', name);
+        console.log(`a user named ${name} connected`);
+    });
+    console.log(users);
+    socket.on('user-changed', name => {
+        users[socket.id] = name;
+        console.log(`User has changed thie username to ${name} !`);
+    });
+    socket.on('chat message', (message) => {
+        socket.broadcast.emit('chat message', { message: message, username: users[socket.id] });
   });
 
-    socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
-  });
-
-//   socket.on('disconnect', () => {
-//     console.log('user disconnected');
-//   });
+  
 });
 
 
-
 server.listen(3000, () => {
-  console.log('server running at http://208.126.74.157');
+  console.log('server running at http://localhost:3000');
 });

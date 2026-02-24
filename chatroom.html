@@ -14,9 +14,9 @@
       #input:focus { outline: none; }
       #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #bcbcbc; }
 
-      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages { list-style-type: none; margin: 0; padding: 2em; }
       #messages > li { padding: 0.5rem 1rem; }
-      #messages > li:nth-child(odd) { background: #65b5b1; }
+      #messages > li { background: #65b5b1; }
     </style>
 </head>
 
@@ -43,7 +43,7 @@
           <li>1. No Hatespeech/toxic behaviour.</li>
           <li>2. Please don't spam.</li>
           <li>3. Respect bounderies of others.</li>
-          <li>4. The chat will (usually) be cleared every 24 hours CST.</li>
+          <li>4. The chat will be cleared when leaving and re-entering/refreshing the page.</li>
         </ul>
     <br>
 	<hr>
@@ -52,9 +52,10 @@
   
 		<h2 style="text-align: center;">-The Chatroom-</h2>
     <br>
-		<ul id="messages"></ul>
-    <form id="form" action="">
+    <div><ul id="messages"></ul></div>
+    <form style="text-align: center;" id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
+      <input id="username-change" placeholder="username" /><button>submit</button>
     </form>
 
   <script src="https://cdn.socket.io/4.8.3/socket.io.min.js"></script>
@@ -64,27 +65,47 @@
     const form = document.getElementById('form');
     const input = document.getElementById('input');
     const messages = document.getElementById('messages');
-    if (form)
-    {
-      form.addEventListener('submit', (e) => {
+    const name = document.getElementById('username-change');
+    appendMessage('You have joined!');
+    socket.emit('new-user', name.value);
+    
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (name.value){
+        socket.emit('user-changed', name.value);
+        name.value = '';
+      }
+    });
+    
+    
+     
+
+      socket.on('chat message', (msg) => {
+      appendMessage(`${msg.username}: ${msg.message}`);
+      });
+
+      socket.on('disconnect', () => {
+        console.log('user disconnected');
+        socket.broadcast.emit('chat message', `User has Disconnected`);
+      });
+
+
+      socket.on('user-connected', name.value);
+       form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (input.value) {
+        appendMessage(`You: ${input.value}`);
         socket.emit('chat message', input.value);
+        
         input.value = '';
         }
       });
-
-      socket.on('chat message', (msg) => {
-      const item = document.createElement('li');
-      item.textContent = msg;
-      messages.appendChild(item);
+    function appendMessage(message) {
+      const messageElement = document.createElement('li');
+      messageElement.textContent = message;
+      messages.appendChild(messageElement);
       window.scrollTo(0, document.body.scrollHeight);
-      });
-    }
-    if (form == null){
-      console.log('Form isnt working, dumbass' )
-    }
-    
+      };
 
     
   </script>
