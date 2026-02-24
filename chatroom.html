@@ -73,7 +73,6 @@
       e.preventDefault();
       if (name.value){
         socket.emit('user-changed', name.value);
-        name.value = '';
       }
     });
     
@@ -84,17 +83,14 @@
       appendMessage(`${msg.username}: ${msg.message}`);
       });
 
-      socket.on('disconnect', () => {
-        console.log('user disconnected');
-        socket.broadcast.emit('chat message', `User has Disconnected`);
-      });
+      
 
 
       socket.on('user-connected', name.value);
        form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (input.value) {
-        appendMessage(`You: ${input.value}`);
+        appendMessage(`${name.value}: ${input.value}`);
         socket.emit('chat message', input.value);
         
         input.value = '';
